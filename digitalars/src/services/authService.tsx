@@ -1,11 +1,11 @@
-const BASE_URL = "http://localhost:5044/api/auth";
+const BASE_URL = "http://localhost:5044/api/Auth";
 
 export interface RegisterRequest {
     
     Nombre: string;
     Apellido: string;
     
-    mail: string;
+    Mail: string;
     Direccion: string;
     Telefono: string;
     Password: string;
