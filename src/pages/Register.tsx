@@ -1,18 +1,14 @@
 ﻿import { useState } from "react";
-import { register, RegisterRequest } from "../services/authService";
-import * as React from "react";
-import { Container, Typography, Box, TextField, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
-import axios from "axios";
+import { RegisterRequest, register } from "../api/AuthService";
+import { Container, Typography, Box, TextField, FormControl, InputLabel, Select, MenuItem, Button, Alert } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState<RegisterRequest>({
-        
         Nombre: "",
         Apellido: "",
         Mail: "",
-        
         Direccion: "",
         Telefono: "",
         Password: "",
@@ -20,23 +16,24 @@ const Register = () => {
     });
 
     const [mensaje, setMensaje] = useState("");
+    const [error, setError] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e: any) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-       // const res = await register(form);
-        //console.log("Registro response:", res);
         try {
-            const res = await axios.post("http://localhost:5044/api/Auth/register", form);
-
+            const res = await register(form);
             setMensaje("✅ Usuario creado correctamente");
-            setTimeout(() => navigate("/login"), 2000);
+            setError(false);
+            setTimeout(() => navigate("/login"), 1500);
         } catch (err: any) {
-            const msg = err.response?.data?.message || "Error al registrar";
+            // err es Error de JS, con msg en err.message
+            const msg = err.message || "Error al registrar";
             setMensaje(`❌ ${msg}`);
+            setError(true);
         }
     };
 
@@ -47,9 +44,9 @@ const Register = () => {
                 <TextField label="Nombre" name="Nombre" value={form.Nombre} onChange={handleChange} required />
                 <TextField label="Apellido" name="Apellido" value={form.Apellido} onChange={handleChange} required />
                 <TextField label="Email" name="Mail" type="email" value={form.Mail} onChange={handleChange} required />
-                <TextField label="Direccion" name="Direccion" value={form.Direccion} onChange={handleChange} />
-                <TextField label="Telefono" name="Telefono" value={form.Telefono} onChange={handleChange} />
-                <TextField label="Password" name="Password" type="password" value={form.Password} onChange={handleChange} required />
+                <TextField label="Dirección" name="Direccion" value={form.Direccion} onChange={handleChange} />
+                <TextField label="Teléfono" name="Telefono" value={form.Telefono} onChange={handleChange} />
+                <TextField label="Contraseña" name="Password" type="password" value={form.Password} onChange={handleChange} required />
 
                 <FormControl fullWidth>
                     <InputLabel>Tipo de Cliente</InputLabel>
@@ -61,8 +58,12 @@ const Register = () => {
 
                 <Button variant="contained" type="submit" size="large">Registrarse</Button>
 
+                {mensaje && (
+                    <Alert severity={error ? "error" : "success"} sx={{ mt: 2 }}>
+                        {mensaje}
+                    </Alert>
+                )}
             </Box>
-            {mensaje && <p className="mt-4 text-center">{mensaje}</p>}
         </Container>
     );
 };
