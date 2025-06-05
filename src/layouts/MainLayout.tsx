@@ -1,44 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import AdminPanelBar from "../components/AdminPanelBar";
 import { useAuth } from "../context/AuthContext";
 import { Outlet, useLocation } from "react-router-dom";
-import Sidebar from "../components/ui/SideBar"; // ¡Asegurate de que el nombre del archivo esté bien!
-
+import Sidebar from "../components/ui/SideBar";
+const drawerWidth = 200;
 const MainLayout = () => {
     const { rol, isAuthenticated } = useAuth();
     const location = useLocation();
+    const [adminPanelOpen, setAdminPanelOpen] = useState(false);
 
-    const showAdminSidebar = rol === "BANCO" && location.pathname.startsWith("/admin");
+    const onToggleAdminPanel = () => setAdminPanelOpen(!adminPanelOpen);
 
-    // No mostrar navbar ni sidebar en login o register
     const noNavbarRoutes = ["/login", "/register"];
     const showNavbar = isAuthenticated && !noNavbarRoutes.includes(location.pathname);
     const showSidebar = isAuthenticated && !noNavbarRoutes.includes(location.pathname);
 
-    // Definir anchos fijos para sidebar y adminpanel
+    // Medidas compartidas con AdminPanelBar y Navbar
+    const navbarHeight = 64;
     const sidebarWidth = 240;
-    const adminPanelWidth = 256;
+    const adminPanelHeight = 48; // altura del AdminPanelBar
 
-    // Calcular margen izquierdo dinámico según qué sidebars estén visibles
-    let marginLeft = 0;
-    if (showSidebar) marginLeft += sidebarWidth;
-    if (showAdminSidebar) marginLeft += adminPanelWidth;
+    // Calculo el margen izquierdo para el contenido principal (Outlet)
+    // El adminPanel no ocupa ancho, solo altura, por eso no sumamos adminPanelWidth aquí
+    const marginLeft = showSidebar ? sidebarWidth : 0;
+
+    // Padding top: sumamos navbarHeight + adminPanelHeight si el panel está abierto
+    const paddingTop = navbarHeight + (adminPanelOpen ? adminPanelHeight : 0);
 
     return (
         <div className="flex min-h-screen flex-col">
-            {showNavbar && <Navbar />}
+            {showNavbar && (
+                <Navbar
+                    adminPanelOpen={adminPanelOpen}
+                    onToggleAdminPanel={onToggleAdminPanel}
+                />
+            )}
+
+            {/* Paso las medidas al AdminPanelBar */}
+            {adminPanelOpen && (
+                <AdminPanelBar drawerWidth={drawerWidth} navbarHeight={navbarHeight} />
+
+            )}
+
             <div className="flex flex-1">
-                {/* Renderizar Sidebar si corresponde */}
                 {showSidebar && <Sidebar />}
-
-                {/* Renderizar AdminPanelBar si corresponde */}
-                {showAdminSidebar && <AdminPanelBar />}
-
-                {/* Contenido principal, con margen dinámico a la izquierda */}
                 <main
                     className="flex-1 p-6"
-                    style={{ marginLeft: `${marginLeft}px` }}
+                    style={{
+                        marginLeft: `${marginLeft}px`,
+                        paddingTop: `${paddingTop}px`,
+                    }}
                 >
                     <Outlet />
                 </main>

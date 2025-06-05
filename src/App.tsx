@@ -8,6 +8,10 @@ import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
 import { useAuth } from "./context/AuthContext";
 import { Outlet } from "react-router-dom";
+//Posibles paginas del navbar ( puede ser modificable)
+import Perfil from "./pages/Profile";
+import Cuentas from "./pages/Accounts";
+import Movements from "./pages/Movements";
 
 
 function App() {
@@ -52,6 +56,39 @@ function App() {
                         element={
                             <PrivateRoute requiredRole="BANCO">
                                 <AdminDashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                    {/* Rutas protegidas para usuarios */}
+                    <Route
+                        path="dashboard"
+                        element={
+                            <PrivateRoute>
+                                <Dashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="perfil"
+                        element={
+                            <PrivateRoute>
+                                <Perfil />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="cuentas"
+                        element={
+                            <PrivateRoute>
+                                <Cuentas />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="movements"
+                        element={
+                            <PrivateRoute>
+                                <Movements />
                             </PrivateRoute>
                         }
                     />
