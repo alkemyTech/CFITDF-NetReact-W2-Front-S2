@@ -4,11 +4,12 @@ import { useAuth } from "../context/AuthContext";
 import { drawerWidth } from "../layouts/layoutConstant";
 
 type NavbarProps = {
-    adminPanelOpen: boolean;
-    onToggleAdminPanel: () => void;
+    adminPanelOpen?: boolean;
+    onToggleAdminPanel?: () => void;
+    onlyProfile?: boolean;
 };
 
-export default function Navbar({ adminPanelOpen, onToggleAdminPanel }: NavbarProps) {
+export default function Navbar({ adminPanelOpen = false, onToggleAdminPanel = () => { }, onlyProfile = false }: NavbarProps) {
     const navigate = useNavigate();
     const { rol, logout } = useAuth();
 
@@ -35,21 +36,22 @@ export default function Navbar({ adminPanelOpen, onToggleAdminPanel }: NavbarPro
             }}
         >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                {/* Izquierda: botones de navegación */}
+                {/* Izquierda: botones de navegación, ocultos si onlyProfile */}
                 <Box sx={{ display: "flex", gap: 2 }}>
-                    <Button component={Link} to="/Profile" color="inherit">Perfil</Button>
-                    <Button component={Link} to="/Accounts" color="inherit">Cuentas</Button>
-                    <Button component={Link} to="/Movements" color="inherit">Movimientos</Button> 
-
-
-                    {rol === "BANCO" && (
-                        <Button onClick={onToggleAdminPanel} color="inherit">
-                            {adminPanelOpen ? "Cerrar Admin" : "Admin Panel"}
-                        </Button>
+                    {!onlyProfile && (
+                        <>
+                            <Button component={Link} to="/perfil" color="inherit">Perfil</Button>
+                            <Button component={Link} to="/movements" color="inherit">Movimientos</Button>
+                            {rol === "BANCO" && (
+                                <Button onClick={onToggleAdminPanel} color="inherit">
+                                    {adminPanelOpen ? "Cerrar Admin" : "Admin Panel"}
+                                </Button>
+                            )}
+                        </>
                     )}
                 </Box>
 
-                {/* Derecha: botón salir + admin panel (si rol BANCO) + rol */}
+                {/* Derecha: botón salir + rol */}
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                     <Button
                         onClick={logout}
@@ -57,9 +59,8 @@ export default function Navbar({ adminPanelOpen, onToggleAdminPanel }: NavbarPro
                         variant="contained"
                         sx={{ color: "white" }}
                     >
-                        Cerrar Sesion
+                        Cerrar Sesión
                     </Button>
-
 
                     {rol && (
                         <Typography variant="body2" sx={{ fontStyle: "italic", color: "#e0e0e0" }}>

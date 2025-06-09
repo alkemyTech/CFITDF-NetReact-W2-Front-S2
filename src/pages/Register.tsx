@@ -1,6 +1,6 @@
 ﻿import { useState } from "react";
 import { RegisterRequest, register } from "../api/AuthService";
-import { Container, Typography, Box, TextField, FormControl, InputLabel, Select, MenuItem, Button, Alert } from '@mui/material';
+import { Container, Typography, Box, TextField, Button, Alert } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -12,7 +12,7 @@ const Register = () => {
         Direccion: "",
         Telefono: "",
         Password: "",
-        Tipo_cliente: "BILLETERA"
+        Tipo_cliente: "BILLETERA" // Siempre BILLETERA fijo
     });
 
     const [mensaje, setMensaje] = useState("");
@@ -30,7 +30,6 @@ const Register = () => {
             setError(false);
             setTimeout(() => navigate("/login"), 1500);
         } catch (err: any) {
-            // err es Error de JS, con msg en err.message
             const msg = err.message || "Error al registrar";
             setMensaje(`❌ ${msg}`);
             setError(true);
@@ -48,13 +47,7 @@ const Register = () => {
                 <TextField label="Teléfono" name="Telefono" value={form.Telefono} onChange={handleChange} />
                 <TextField label="Contraseña" name="Password" type="password" value={form.Password} onChange={handleChange} required />
 
-                <FormControl fullWidth>
-                    <InputLabel>Tipo de Cliente</InputLabel>
-                    <Select name="Tipo_cliente" value={form.Tipo_cliente} label="Tipo de Cliente" onChange={handleChange}>
-                        <MenuItem value="BILLETERA">Billetera</MenuItem>
-                        <MenuItem value="BANCO">Administrador</MenuItem>
-                    </Select>
-                </FormControl>
+                {/* Aquí no mostramos ni permitimos elegir el tipo, porque siempre es BILLETERA */}
 
                 <Button variant="contained" type="submit" size="large">Registrarse</Button>
 

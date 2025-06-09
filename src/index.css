@@ -1,47 +1,4 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-.fade-in {
-    animation: fadeIn 0.6s ease-in;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.responsive-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem;
-}
-a:hover {
-  color: #535bf2;
-}
+<meta charset="UTF-8" / >
 :root {
     --color-text-light: #213547;
     --color-bg-light: #f8fafc;
@@ -51,22 +8,16 @@ a:hover {
     --color-text-dark: rgba(255, 255, 255, 0.87);
     --color-bg-dark: #121212;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
-    font-weight: 400;
-    color-scheme: light dark;
-    color: var(--color-text-dark);
-    background-color: var(--color-bg-dark);
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-/*@media (prefers-color-scheme: light) {*/
-    :root {
-        color: var(--color-text-light);
-        background-color: var(--color-bg-light);
-    }
+    font-weight: 400;
+    line-height: 1.6;
+    color-scheme: light dark;
+    /* Establecemos color y fondo predeterminados (modo claro por defecto) */
+    color: var(--color-text-light);
+    background-color: var(--color-bg-light);
 }
 
 body {
@@ -106,4 +57,28 @@ button {
     background-color: var(--color-button-bg);
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+/* Animaciones */
+.fade-in {
+    animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.responsive-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -7,28 +6,26 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
 import { useAuth } from "./context/AuthContext";
-import { Outlet } from "react-router-dom";
-//Posibles paginas del navbar ( puede ser modificable)
 import Perfil from "./pages/Profile";
 import Cuentas from "./pages/Accounts";
 import Movements from "./pages/Movements";
-
-
+import Operaciones from "./pages/Operaciones";
 function App() {
     const { isAuthenticated, rol } = useAuth();
 
     return (
         <BrowserRouter>
             <Routes>
-                {/* Layout general que contiene todas las rutas con Navbar y panel */}
                 <Route path="/" element={<MainLayout />}>
-                    {/* Redirección inicial según login y rol */}
+                    {/* Redirección inicial */}
                     <Route
                         index
                         element={
                             isAuthenticated ? (
                                 rol === "BANCO" ? (
                                     <Navigate to="/admin" replace />
+                                ) : rol === "BILLETERA" ? (
+                                    <Navigate to="/cuentas" replace />
                                 ) : (
                                     <Navigate to="/dashboard" replace />
                                 )
@@ -42,29 +39,23 @@ function App() {
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
 
-                    {/* Rutas protegidas */}
                     <Route
                         path="dashboard"
                         element={
                             <PrivateRoute>
-                                <Dashboard />
+                                <Dashboard />   
                             </PrivateRoute>
                         }
-                    />
+
+                    >
+                        <Route index element={<Dashboard />} />
+                        <Route path="operaciones" element={<Operaciones />} />
+                    </Route>
                     <Route
                         path="admin"
                         element={
                             <PrivateRoute requiredRole="BANCO">
                                 <AdminDashboard />
-                            </PrivateRoute>
-                        }
-                    />
-                    {/* Rutas protegidas para usuarios */}
-                    <Route
-                        path="dashboard"
-                        element={
-                            <PrivateRoute>
-                                <Dashboard />
                             </PrivateRoute>
                         }
                     />
@@ -87,19 +78,27 @@ function App() {
                     <Route
                         path="movements"
                         element={
-                            <PrivateRoute>
+                            <PrivateRoute requiredRole="BILLETERA">
                                 <Movements />
                             </PrivateRoute>
                         }
                     />
+                    <Route
+                        path="/operaciones"
+                        element={
+                            <PrivateRoute requiredRole="BILLETERA">
+                                <Operaciones />
+                            </PrivateRoute>
+                        }
+                    />
 
-                    {/* Ruta de acceso denegado */}
+
+
+                    {/* Rutas de error y fallback */}
                     <Route
                         path="unauthorized"
                         element={<h2>No tienes permiso para ver esta página.</h2>}
                     />
-
-                    {/* Ruta no encontrada */}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Route>
             </Routes>

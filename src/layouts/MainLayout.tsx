@@ -21,7 +21,7 @@ const MainLayout = () => {
     const sidebarWidth = 240;
     const adminPanelHeight = 48; // altura del AdminPanelBar
 
-    // Calculo el margen izquierdo para el contenido principal (Outlet)
+    // Calculo el margen izquierdo para el contenido principal (Outlet) 
     // El adminPanel no ocupa ancho, solo altura, por eso no sumamos adminPanelWidth aquí
     const marginLeft = showSidebar ? sidebarWidth : 0;
 

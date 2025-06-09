@@ -25,13 +25,13 @@ const AdminPanelBar = ({ drawerWidth, navbarHeight }: AdminPanelBarProps) => {
         >
             <Toolbar sx={{ display: "flex", gap: 3, minHeight: 48 }}>
                 <Link to="/admin" style={{ color: "inherit", textDecoration: "none" }}>
-                    Dashboard Admin
+                    ConsultarUNMovimiento
                 </Link>
                 <Link to="/admin/usuarios" style={{ color: "inherit", textDecoration: "none" }}>
-                    Gestionar Usuarios
+                    DesactivarUNACuenta
                 </Link>
                 <Link to="/admin/reportes" style={{ color: "inherit", textDecoration: "none" }}>
-                    Ver Reportes
+                    ObtenerUNUsuario
                 </Link>
                 <Link to="/admin/configuracion" style={{ color: "inherit", textDecoration: "none" }}>
                     Configuración
